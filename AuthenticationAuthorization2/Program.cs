@@ -12,7 +12,7 @@ namespace AuthenticationAuthorization2
             builder.Services.AddAuthentication("Cookies").AddCookie();
             
             var app = builder.Build();
-            app.UseAuthentication();
+            app.UseAuthentication(); // NET 7 버전에는 없어도 실행 되었지만 이전 버전이 안 될 경우 필요.
 
             app.MapGet("/", async context => {
                 string content = "<h1>ASP .NET Core 인증과 권한 초간단 코드</h1>";

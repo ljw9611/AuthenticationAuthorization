@@ -22,7 +22,8 @@ namespace AuthenticationAuthorization2
 
                 content += "<a href='/Login'>로그인</a><br />";
                 content += "<a href='/Info'>정보</a><br />";
-                content += "<a href='/InfoJson'>정보(Json)</a>";
+                content += "<a href='/InfoJson'>정보(Json)</a><br />";
+                content += "<a href='/Logout'>로그아웃</a>";
 
                 context.Response.Headers.ContentType = "text/html; charset=utf-8";
                 // 한글 깨짐 해결
@@ -90,10 +91,20 @@ namespace AuthenticationAuthorization2
                     {
                         json += "<h3>로그인하지 않았습니다.<h3>";
                     }
-                    context.Response.Headers.ContentType = "text/html; charset=utf-8";
+
+                    // MIME 타입
+                    context.Response.Headers.ContentType = "application/json; charset=utf-8";
                     await context.Response.WriteAsync(json);
-                }); 
+                });
             #endregion
+
+            app.MapGet("/Logout", async context =>
+            {
+                await context.SignOutAsync("Cookies"); // 동일한 스키마 이름으로 해야 함
+
+                context.Response.Headers.ContentType = "text/html; charset=utf-8";
+                await context.Response.WriteAsync("<h3>로그아웃 완료</h3>");
+            });
 
             app.Run();
         }

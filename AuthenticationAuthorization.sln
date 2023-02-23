@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthenticationAuthorization", "AuthenticationAuthorization\AuthenticationAuthorization.csproj", "{A36B089D-8A7E-4F52-B105-CCA242F65682}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthenticationAuthorization2", "AuthenticationAuthorization2\AuthenticationAuthorization2.csproj", "{B38857FE-9378-4C4F-A7AA-23301BB94C89}"
 EndProject
 Global
@@ -13,10 +11,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A36B089D-8A7E-4F52-B105-CCA242F65682}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A36B089D-8A7E-4F52-B105-CCA242F65682}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A36B089D-8A7E-4F52-B105-CCA242F65682}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A36B089D-8A7E-4F52-B105-CCA242F65682}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B38857FE-9378-4C4F-A7AA-23301BB94C89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B38857FE-9378-4C4F-A7AA-23301BB94C89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B38857FE-9378-4C4F-A7AA-23301BB94C89}.Release|Any CPU.ActiveCfg = Release|Any CPU

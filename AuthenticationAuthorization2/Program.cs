@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -10,13 +13,21 @@ namespace AuthenticationAuthorization2
 {
     public class Program
     {
+
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(); // 해당 경로 위치에 있어야 함
-            
+            #region ConfigureServices 영역
+            builder.Services.AddControllersWithViews();
+            //builder.Services.AddAuthentication("Cookies").AddCookie(); 
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(); // Cookies의 상수를 갖고 있음
+
+            #endregion
             var app = builder.Build();
+
+            
             app.UseAuthentication(); // NET 7 버전에는 없어도 실행 되었지만 이전 버전이 안 될 경우 필요.
+            
 
             #region Menu
             app.MapGet("/", async context =>
@@ -29,7 +40,9 @@ namespace AuthenticationAuthorization2
                 content += "<a href='/Info'>정보</a><br />";
                 content += "<a href='/InfoDetails'>정보(Details)</a><br />";
                 content += "<a href='/InfoJson'>정보(Json)</a><br />";
-                content += "<a href='/Logout'>로그아웃</a>";
+                content += "<a href='/Logout'>로그아웃</a><br />";
+                content += "<a href='/Landing/Index'>랜딩페이지</a><br />";
+                content += "<a href='/Landing/Greeting'>환영페이지</a><br />";
 
                 context.Response.Headers.ContentType = "text/html; charset=utf-8";
                 // 한글 깨짐 해결
@@ -40,6 +53,7 @@ namespace AuthenticationAuthorization2
             #region /Login/{Username}
             app.MapGet("/Login/{Username}", async context =>
                 {
+                    
                     var username = context.Request.RouteValues["Username"].ToString();
                     var claims = new List<Claim>
                         {
@@ -172,15 +186,29 @@ namespace AuthenticationAuthorization2
 
                     context.Response.Headers.ContentType = "text/html; charset=utf-8";
                     await context.Response.WriteAsync("<h3>로그아웃 완료</h3>");
-                }); 
+                });
             #endregion
 
+            //app.MapControllerRoute(name: "default",pattern: "{controller=Landing}/{action=Index}");
+            app.MapDefaultControllerRoute();
             app.Run();
+
         }
         public class ClaimDto // DTO : Data Transfer Object
         {
             public string Type { get; set; }
             public string Value { get; set; }
+        }
+        [AllowAnonymous]
+        public class LandingController : Controller
+        {
+            public IActionResult Index() => Content("누구나 접근 가능");
+
+            public IActionResult Greeting()
+            {
+                var roleName = HttpContext.User.IsInRole("Admin") ? "관리자" : "사용자";
+                return Content($"{roleName} 님 반갑습니다");
+            }
         }
     }
 }

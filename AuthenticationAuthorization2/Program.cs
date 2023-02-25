@@ -18,16 +18,17 @@ namespace AuthenticationAuthorization2
         {
             var builder = WebApplication.CreateBuilder(args);
             #region ConfigureServices 영역
-            builder.Services.AddControllersWithViews();
+            //builder.Services.AddControllersWithViews();
+            builder.Services.AddControllers();
             //builder.Services.AddAuthentication("Cookies").AddCookie(); 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(); // Cookies의 상수를 갖고 있음
 
             #endregion
             var app = builder.Build();
 
-            
+            app.UseRouting();
             app.UseAuthentication(); // NET 7 버전에는 없어도 실행 되었지만 이전 버전이 안 될 경우 필요.
-            
+            app.UseAuthorization();
 
             #region Menu
             app.MapGet("/", async context =>
@@ -43,6 +44,8 @@ namespace AuthenticationAuthorization2
                 content += "<a href='/Logout'>로그아웃</a><br />";
                 content += "<a href='/Landing/Index'>랜딩페이지</a><br />";
                 content += "<a href='/Landing/Greeting'>환영페이지</a><br />";
+                content += "<a href='/Dashboard'>관리자페이지</a><br />";
+                content += "<a href='/api/AuthService'>로그인 정보(JSON)</a><br />";
 
                 context.Response.Headers.ContentType = "text/html; charset=utf-8";
                 // 한글 깨짐 해결
@@ -199,6 +202,7 @@ namespace AuthenticationAuthorization2
             public string Type { get; set; }
             public string Value { get; set; }
         }
+
         
     }
 }
